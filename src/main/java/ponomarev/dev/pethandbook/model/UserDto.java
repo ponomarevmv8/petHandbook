@@ -6,17 +6,16 @@ import java.util.List;
 
 public class UserDto {
 
-    @Null
     private Long id;
 
     @NotBlank(message = "name connot be blank")
     private String name;
 
-    @NotBlank(message = "email connot be blank")
+    @NotBlank
     @Email(message = "email not correct")
     private String email;
 
-    @NotNull(message = "Age connot be null")
+    @NotNull
     @Min(value = 0, message = "Age must be positive")
     @Max(value = 120, message = "Age connot more then 120")
     private Integer age;

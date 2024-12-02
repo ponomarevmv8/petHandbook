@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Null;
 
 public class PetDto {
 
-    @Null
     private Long id;
 
     @NotBlank(message = "Name connot be blank")

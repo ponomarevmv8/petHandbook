@@ -54,45 +54,36 @@ public class PetControllerTest {
     }
 
     @Test
-    void shouldNotCreatePet() throws Exception {
-        var newPetIdNotNull = new PetDto(
-                1L,
-                "Rex",
-                1L
-        );
-
+    void shouldNotCreatePetWhenNameIsBlank() throws Exception {
         var newPetIdBlankName = new PetDto(
                 null,
                 " ",
                 1L
         );
 
+        String newPetJson = objectMapper.writeValueAsString(newPetIdBlankName);
+
+        mockMvc.perform(post("/pets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newPetJson)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldBotCreatePetWhenUserIdIsNull() throws Exception {
         var newPetIdNullUserId = new PetDto(
                 null,
                 "Rex",
                 null
         );
 
-        String newPetJson = objectMapper.writeValueAsString(newPetIdNotNull);
+        String newPetJson = objectMapper.writeValueAsString(newPetIdNullUserId);
 
         mockMvc.perform(post("/pets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newPetJson)
         ).andExpect(status().isBadRequest());
 
-        newPetJson = objectMapper.writeValueAsString(newPetIdBlankName);
-
-        mockMvc.perform(post("/pets")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(newPetJson)
-        ).andExpect(status().isBadRequest());
-
-        newPetJson = objectMapper.writeValueAsString(newPetIdNullUserId);
-
-        mockMvc.perform(post("/pets")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(newPetJson)
-        ).andExpect(status().isBadRequest());
     }
 
     @Test

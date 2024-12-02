@@ -1,6 +1,5 @@
 package ponomarev.dev.pethandbook;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -57,53 +56,46 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldNotCreateUserWhenNotValid() throws Exception {
-        var newUser = new UserDto(
-                1L,
-                "Max",
-                "max@mail.ru",
-                28
-        );
-        String newUserJson = objectMapper.writeValueAsString(newUser);
-
-        mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(newUserJson)
-        ).andExpect(status().isBadRequest());
-
+    void shouldNotCreateUserWhenNameIsBlank() throws Exception {
         var newUserBlankName = new UserDto(
                 null,
                 " ",
                 "max@mail.ru",
                 28
         );
-        newUserJson = objectMapper.writeValueAsString(newUser);
+        String newUserJson = objectMapper.writeValueAsString(newUserBlankName);
 
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newUserJson)
         ).andExpect(status().isBadRequest());
+    }
 
+    @Test
+    void shouldNotCreateUserWhenEmailNotValid() throws Exception {
         var newUserNotValidEmail = new UserDto(
                 null,
                 "Max",
                 "maxmail.ru",
                 28
         );
-        newUserJson = objectMapper.writeValueAsString(newUser);
+        String newUserJson = objectMapper.writeValueAsString(newUserNotValidEmail);
 
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newUserJson)
         ).andExpect(status().isBadRequest());
+    }
 
+    @Test
+    void shouldNotCreateUserWhenAgeIsNegative() throws Exception {
         var newUserNotPositiveAge = new UserDto(
                 null,
                 "Max",
                 "max@mail.ru",
                 -28
         );
-        newUserJson = objectMapper.writeValueAsString(newUser);
+        String newUserJson = objectMapper.writeValueAsString(newUserNotPositiveAge);
 
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)

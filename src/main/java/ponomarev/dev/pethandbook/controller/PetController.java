@@ -29,14 +29,21 @@ public class PetController {
                 .body(petService.findById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<PetDto>> findAll(
+    @GetMapping("/search")
+    public ResponseEntity<List<PetDto>> serchPet(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long userId
     ) {
         log.info("Find pets by name: {}, userId: {}", name, userId);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(petService.findAll(name, userId));
+                .body(petService.searchPet(name, userId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PetDto>> findAll() {
+        log.info("Find all pets");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(petService.findAll());
     }
 
     @PostMapping

@@ -28,14 +28,20 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserDto>> findAll(
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDto>> searchUser(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) Integer age
     ) {
+        log.info("Search all users");
+        return ResponseEntity.ok(userService.search(name, email, age));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDto>> findAll() {
         log.info("Find all users");
-        return ResponseEntity.ok(userService.findAll(name, email, age));
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @PostMapping
